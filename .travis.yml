@@ -1,0 +1,13 @@
+dist: trusty
+language: csharp
+install: true
+mono: latest
+dotnet: 1.0.4
+sudo: required
+branches:
+  only:
+    - netcore
+script:
+  - ./build.sh -t Deploy
+env:
+  - DeployTo="https://linker-demo.scm.azurewebsites.net/api/zip/site/wwwroot/Linker"

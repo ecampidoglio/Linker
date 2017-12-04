@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Linker</id>
+    <version>1.0.0</version>
+    <authors>Enrico Campidoglio</authors>
+    <description>A simple web-based hyperlink database</description>
+    <copyright>Creative Commons Attribution 4.0 International License</copyright>
+  </metadata>
+  <files>
+      <file src="bin\**\*" target="bin" />
+      <file src="Web*.config" target="." />
+  </files>
+</package>
