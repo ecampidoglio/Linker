@@ -217,7 +217,8 @@ Task("Test-VSTest")
             Logger = "trx",
             EnableCodeCoverage = true,
             InIsolation = true,
-            TestAdapterPath = $"tools/xunit.runner.visualstudio/build/_common"
+            TestAdapterPath = $"tools/xunit.runner.visualstudio/build/_common",
+            ToolPath = $"{VS2017InstallDirectory(Context)}/Common7/IDE/CommonExtensions/Microsoft/TestWindow/vstest.console.exe"
         });
 });
 
