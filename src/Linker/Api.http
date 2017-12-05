@@ -1,0 +1,17 @@
+### Creates a new link
+PUT http://localhost:5000/link/new-link-id HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2Fexample.com
+
+### Creates a new link without ID
+POST http://localhost:5000/link HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+url=http%3A%2F%2Fexample.com
+
+### Gets the metadata about the link
+GET http://localhost:5000/link/new-link-id HTTP/1.1
+
+### Follows the link
+GET http://localhost:5000/new-link-id HTTP/1.1

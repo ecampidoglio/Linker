@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Linker</title>
+    <link href="/style/main.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400" rel="stylesheet">
+    <script src="https://use.fontawesome.com/44db616403.js" async></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $('#submit').bind('click', function() {
+                $('#link').hide();
+                $('#error').hide();
+                $('#spinner').show();
+
+                $.post(
+                    '/link',
+                    {
+                        url: $('#url').val()
+                    }
+                ).done(function(data, status, request) {
+                    var url = request.getResponseHeader('Location');
+                    $('#link').attr('href', url).text(url);
+                    $('#link').show();
+                }).fail(function(data, status, error) {
+                    $('#error').text(error);
+                    $('#error').show();
+                }).always(function() {
+                    $('#spinner').hide();
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="container">
+        <input type="text" id="url" autofocus />
+        <img src="/images/logo.png" id="logo" />
+        <input type="button" id="submit" value="Shorten" />
+        <i class="fa fa-spinner fa-spin" aria-hidden="true" id="spinner"></i>
+        <p id="result">
+            <a id="link" href="#"></a>
+            <span id="error"></span>
+        </p>
+    </div>
+</body>
+
+</html>

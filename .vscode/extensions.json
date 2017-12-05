@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "ms-vscode.csharp",
+        "cake-build.cake-vscode",
+        "humao.rest-client"
+    ]
+}
