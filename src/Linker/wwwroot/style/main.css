@@ -39,6 +39,12 @@ input:focus {
   -moz-border-radius: 28px;
 }
 
+#about {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 150%;
+}
+
 #logo {
   width: 30px;
   height: 30px;
