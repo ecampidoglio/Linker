@@ -8,10 +8,6 @@ a {
   text-decoration: none;
 }
 
-a:visited {
-  color: #555;
-}
-
 input:focus {
     outline: none;
 }
