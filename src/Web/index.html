@@ -29,6 +29,12 @@
                 animation:'pop'
             });
 
+            $('#url').keyup(function(event) {
+                if (event.keyCode === 13) {
+                    $('#submit').click();
+                }
+            });
+
             $('#submit').bind('click', function() {
                 $('#link').hide();
                 $('#error').hide();
