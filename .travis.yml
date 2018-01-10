@@ -10,4 +10,4 @@ branches:
 script:
   - ./build.sh -t Deploy
 env:
-  - DeployTo="https://linker-demo.scm.azurewebsites.net/api/zip/site/wwwroot/Linker"
+  - DeployTo="https://linker-demo.scm.azurewebsites.net/api/zipdeploy"
