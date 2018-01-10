@@ -93,7 +93,9 @@ Task("Deploy")
         {
             Username = EnvironmentVariable("DeploymentUser"),
             Password = EnvironmentVariable("DeploymentPassword"),
-            ArgumentCustomization = args => args.Append("--fail")
+            ArgumentCustomization = args => args
+                .AppendSwitch("-X", "POST")
+                .Append("--fail")
         });
 });
 
