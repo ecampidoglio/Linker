@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.0</TargetFramework>
     <DebugType>portable</DebugType>
+    <NoWarn>1701;NU1603</NoWarn>
     <AssemblyName>Linker.Tests</AssemblyName>
     <PackageId>Linker.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
