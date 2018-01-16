@@ -1,4 +1,4 @@
-#addin nuget:?package=Cake.Curl&version=2.0.0
+#addin nuget:?package=Cake.Curl&version=2.1.0
 #addin nuget:?package=Cake.Incubator&version=1.5.0
 
 #load build/paths.cake
@@ -93,9 +93,8 @@ Task("Deploy")
         {
             Username = EnvironmentVariable("DeploymentUser"),
             Password = EnvironmentVariable("DeploymentPassword"),
-            ArgumentCustomization = args => args
-                .AppendSwitch("-X", "POST")
-                .Append("--fail")
+            RequestCommand = "POST",
+            ArgumentCustomization = args => args.Append("--fail")
         });
 });
 
