@@ -88,7 +88,7 @@ Task("Deploy")
 {
     CurlUploadFile(
         Combine(packageOutputPath, $"Linker.{packageVersion}.zip"),
-        EnvironmentVariable<Uri>("DeployTo") ?? Urls.DeploymentUrl,
+        EnvironmentVariable<Uri>("DeployTo", Urls.DeploymentUrl),
         new CurlSettings
         {
             Username = EnvironmentVariable("DeploymentUser"),
