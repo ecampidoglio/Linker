@@ -5,7 +5,7 @@ branches:
 environment:
   DeploymentUser: linker-deployer
   DeploymentPassword:
-    secure: Lt4jDIlmUJmdowyjbuctAw==
+    secure: tSOPikPGEVpvuMYU27Vinw==
 test: off
 deploy: off
 build_script:
