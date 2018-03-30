@@ -7,7 +7,7 @@
 Linker is a _really_ simple web-based URL shortening service.
 
 ## Background
-When I set out to create a [Pluralsight course](https://www.pluralsight.com/courses/cake-applications-deploying-building) about my favorite built tool, [Cake](https://cakebuild.net), I needed a .NET web application for my demos. The idea of the course was to take an existing web app and show how to use Cake to create a *build* and *deployment* pipeline for it from scratch. By the end, you'd have a Cake script that can take the application all the way from source code to running software. That idea eventually became [*Building and Deploying Applications with Cake*](https://www.pluralsight.com/courses/cake-applications-deploying-building), which you can read more about [here](https://megakemp.com/2017/10/20/cake-at-pluralsight/).
+When I set out to create a [Pluralsight course](http://bit.ly/ps-cake) about my favorite built tool, [Cake](https://cakebuild.net), I needed a .NET web application for my demos. The idea of the course was to take an existing web app and show how to use Cake to create a *build* and *deployment* pipeline for it from scratch. By the end, you'd have a Cake script that can take the application all the way from source code to running software. That idea eventually became [*Building and Deploying Applications with Cake*](http://bit.ly/ps-cake), which you can read more about [here](https://megakemp.com/2017/10/20/cake-at-pluralsight/).
 
 Back to the app. Right off the bat, I had three requirements for it:
 
@@ -40,6 +40,6 @@ You'll find the Windows-only version in the `master` branch, while the cross-pla
 
 ## What to Do with It
 
-Although Linker came into existence to serve the needs of my Pluralsight course [Building and Deploying Applications with Cake](https://www.pluralsight.com/courses/cake-applications-deploying-building), it has proven to be equally useful for other educational purposes. In fact, I'll go as far as to say that if you ever need a demo app for a course, a talk or a workshop, you should feel free to use Linker for it. After all, it's just a simple—although complete—ASP.NET web app.
+Although Linker came into existence to serve the needs of my Pluralsight course [Building and Deploying Applications with Cake](http://bit.ly/ps-cake), it has proven to be equally useful for other educational purposes. In fact, I'll go as far as to say that if you ever need a demo app for a course, a talk or a workshop, you should feel free to use Linker for it. After all, it's just a simple—although complete—ASP.NET web app.
 
 By the way, if you see any way you could improve it, pull requests are always welcome. 🚀
