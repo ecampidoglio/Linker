@@ -1,4 +1,4 @@
-# Linker
+# Linker ![](https://github.com/ecampidoglio/Linker/blob/master/Icon.png)
 
 |  VSTS | AppVeyor | Travis CI |
 |  :--: | :------: | :-------: |
