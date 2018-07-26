@@ -7,7 +7,6 @@
     <AssemblyName>Linker.Tests</AssemblyName>
     <PackageId>Linker.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
-    <RuntimeFrameworkVersion>1.0.4</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>
