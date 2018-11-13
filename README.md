@@ -43,3 +43,10 @@ You'll find the Windows-only version in the `master` branch, while the cross-pla
 Although Linker came into existence to serve the needs of my Pluralsight course [Building and Deploying Applications with Cake](http://bit.ly/ps-cake), it has proven to be equally useful for other educational purposes. In fact, I'll go as far as to say that if you ever need a demo app for a course, a talk or a workshop, you should feel free to use Linker for it. After all, it's just a simple—although complete—ASP.NET web app.
 
 By the way, if you see any way you could improve it, pull requests are always welcome. 🚀
+
+## Additional Resources
+
+You can see Linker in action in the following online resources:
+
+- [Building and Deploying Applications with Cake](https://www.pluralsight.com/courses/cake-applications-deploying-building) (Pluralsight Course)
+- [Cake + .NET Core = Write Once, Build Anywhere](https://youtu.be/FKbykwvB_MU) (NDC London 2018 Conference Talk)
