@@ -1,13 +1,13 @@
 dist: trusty
 language: csharp
 install: true
-mono: latest
-dotnet: 1.0.4
+mono: none
+dotnet: 2.1.500
 sudo: required
 branches:
   only:
-    - netcore
+    - netcore-2.1
 script:
-  - ./build.sh -t Deploy
+  - ./build.sh --target=Deploy
 env:
   - DeployTo="https://linker-demo.scm.azurewebsites.net/api/zipdeploy"
