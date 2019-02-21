@@ -11,6 +11,15 @@ var packageOutputPath = Directory(Argument("packageOutputPath", "packages"));
 
 var packageVersion = "0.1.0";
 
+Task("Clean")
+    .Does(() =>
+{
+    CleanDirectory(packageOutputPath);
+    CleanDirectory(Paths.PublishDirectory);
+    CleanDirectories("**/bin");
+    CleanDirectories("**/obj");
+});
+
 Task("Restore")
     .Does(() =>
 {
