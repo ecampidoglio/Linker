@@ -1,5 +1,5 @@
-#addin nuget:?package=Cake.Curl&version=2.1.0
-#addin nuget:?package=Cake.Incubator&version=1.5.0
+#addin nuget:?package=Cake.Curl&version=4.0.0
+#addin nuget:?package=Cake.Incubator&version=3.1.0
 
 #load build/paths.cake
 #load build/version.cake
