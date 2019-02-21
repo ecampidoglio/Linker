@@ -20,14 +20,7 @@ Task("Clean")
     CleanDirectories("**/obj");
 });
 
-Task("Restore")
-    .Does(() =>
-{
-    DotNetCoreRestore(Paths.SolutionFile.FullPath);
-});
-
 Task("Build")
-    .IsDependentOn("Restore")
     .Does(() =>
 {
     DotNetCoreBuild(
@@ -39,7 +32,6 @@ Task("Build")
 });
 
 Task("Test")
-    .IsDependentOn("Restore")
     .Does(() =>
 {
     DotNetCoreTest(Paths.TestProjectFile.FullPath);
