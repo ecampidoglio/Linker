@@ -7,7 +7,7 @@
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Release");
-var packageOutputPath = Argument<DirectoryPath>("packageOutputPath", "packages");
+var packageOutputPath = Directory(Argument("packageOutputPath", "packages"));
 
 var packageVersion = "0.1.0";
 
