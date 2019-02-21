@@ -43,17 +43,12 @@ Task("Version")
     Information($"Read package version {packageVersion}");
 });
 
-Task("Remove-Packages")
+Task("Package-NuGet")
+    .IsDependentOn("Test")
     .Does(() =>
 {
     CleanDirectory(packageOutputPath);
-});
 
-Task("Package-NuGet")
-    .IsDependentOn("Test")
-    .IsDependentOn("Remove-Packages")
-    .Does(() =>
-{
     DotNetCorePack(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePackSettings
@@ -66,9 +61,10 @@ Task("Package-NuGet")
 Task("Package-Zip")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
-    .IsDependentOn("Remove-Packages")
     .Does(() =>
 {
+    CleanDirectory(packageOutputPath);
+
     DotNetCorePublish(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePublishSettings
