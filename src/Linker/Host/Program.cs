@@ -1,6 +1,7 @@
 using System.IO;
 using Linker.Web;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Linker.Host
 {
@@ -12,6 +13,7 @@ namespace Linker.Host
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseKestrel()
                 .UseIISIntegration()
+                .ConfigureLogging(log => log.AddConsole())
                 .UseStartup<Startup>()
                 .Build()
                 .Run();

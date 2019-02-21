@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Linker.Web.Configuration;
 
 namespace Linker.Web
@@ -13,12 +12,11 @@ namespace Linker.Web
             services.AddLinkInMemoryStore();
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory log)
+        public void Configure(IApplicationBuilder app)
         {
             app.UseMvc();
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            log.AddConsole();
         }
     }
 }
