@@ -9,4 +9,4 @@ environment:
 test: off
 deploy: off
 build_script:
-  - ps: .\build.ps1 -Target Deploy-WebDeploy
+  - ps: .\build.ps1 -Target Test
