@@ -5,6 +5,7 @@
     <DebugType>portable</DebugType>
     <NoWarn>1701;NU1603</NoWarn>
     <AssemblyName>Linker.Tests</AssemblyName>
+    <IsTestProject>true</IsTestProject>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
   </PropertyGroup>
 
