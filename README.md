@@ -33,16 +33,22 @@ This repository contains the complete source code, with tests and everything. Of
 
 Since Cake is cross-platform, Linker should be as well. So I wrote two versions of it:
 
-* One that runs only on Windows on top of the [.NET Framework 4.6](https://docs.microsoft.com/en-us/dotnet/framework/)
+* One that runs only on Windows on top of the [.NET Framework](https://docs.microsoft.com/en-us/dotnet/framework/)
 * One that runs on Windows, macOS or Linux built on top of [.NET Core](https://docs.microsoft.com/en-us/dotnet/core/get-started)
 
-You'll find the Windows-only version in the `master` branch, while the cross-platform one is in a branch called `netcore`.
+You'll find the Windows-only version in the [`pluralsight-net4.6`](https://github.com/ecampidoglio/Linker/tree/pluralsight-net4.6) branch, while the cross-platform one is in a branch called [`pluralsight-netcore1.0`](https://github.com/ecampidoglio/Linker/tree/pluralsight-netcore1.0). These are the exact versions featured in the [Pluralsight course](http://bit.ly/ps-cake) and will stay as they are for reference.
+
+As time went on, however, I realized that if Linker was going to stay valuable, it had to be kept up-to-date with the current technology. So, I eventually upgraded the .NET Core version from 1.0 to [2.1 LTS](https://devblogs.microsoft.com/dotnet/announcing-net-core-2-1/).
+
+.NET Core is clearly the future when it comes to .NET development; it's also cross-platform, leaving little value in maintaining a separate version that only runs on Windows. For these reasons, I decided to make the .NET Core 2.1 version the _canonical version_ by [merging it](https://github.com/ecampidoglio/Linker/commit/08a80e5dce4f7a10f0725a589e53598d12f0483e) into `master`. That became the officially maintained version of Linker going forward.
 
 ## What to Do with It
 
-Although Linker came into existence to serve the needs of my Pluralsight course [Building and Deploying Applications with Cake](http://bit.ly/ps-cake), it has proven to be equally useful for other educational purposes. In fact, I'll go as far as to say that if you ever need a demo app for a course, a talk or a workshop, you should feel free to use Linker for it. After all, it's just a simple—although complete—ASP.NET web app.
+Although Linker came into existence to serve the needs of my Pluralsight course [Building and Deploying Applications with Cake](http://bit.ly/ps-cake), it has proven to be equally useful for other educational purposes. In fact, I'll go as far as to say that if you ever need a demo app for a course, a talk or a workshop, you should feel free to use Linker for it. To put in one sentence:
 
-By the way, if you see any way you could improve it, pull requests are always welcome. 🚀
+> Linker is a simple and complete ASP.NET Core web application, ready to go. :rocket:
+
+Of course, if you would like to improve it in any way, pull requests are always welcome.
 
 ## Additional Resources
 
