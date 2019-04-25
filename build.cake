@@ -15,6 +15,7 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(packageOutputPath);
+    CleanDirectory(Paths.TestResultsDirectory);
     CleanDirectory(Paths.PublishDirectory);
     CleanDirectories("**/bin");
     CleanDirectories("**/obj");
@@ -34,7 +35,16 @@ Task("Build")
 Task("Test")
     .Does(() =>
 {
-    DotNetCoreTest(Paths.TestProjectFile.FullPath);
+    CleanDirectory(Paths.TestResultsDirectory);
+
+    DotNetCoreTest(
+        Paths.TestProjectFile.FullPath,
+        new DotNetCoreTestSettings
+        {
+            Configuration = configuration,
+            Logger = "trx", // VSTest results format
+            ResultsDirectory = Paths.TestResultsDirectory
+        });
 });
 
 Task("Version")
