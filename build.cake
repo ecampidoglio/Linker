@@ -105,4 +105,22 @@ Task("Deploy")
         });
 });
 
+Task("Publish-AzurePipelines-Test-Results")
+    .IsDependentOn("Test")
+    .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
+    .Does(() =>
+{
+    BuildSystem.TFBuild.Commands.PublishTestResults(
+        new TFBuildPublishTestResultsData
+        {
+            Configuration = configuration,
+            TestRunner = TFTestRunnerType.VSTest,
+            MergeTestResults = true,
+            TestResultsFiles = GetFiles(Paths.TestResultsDirectory + "/*.trx").ToList()
+        });
+});
+
+Task("Publish-Test-Results")
+    .IsDependentOn("Publish-AzurePipelines-Test-Results");
+
 RunTarget(target);
