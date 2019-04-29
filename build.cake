@@ -1,5 +1,6 @@
 #addin nuget:?package=Cake.Curl&version=4.0.0
 #addin nuget:?package=Cake.Incubator&version=5.0.1
+#addin nuget:?package=Cake.Coverlet&version=2.2.1
 
 #load build/paths.cake
 #load build/version.cake
@@ -44,7 +45,14 @@ Task("Test")
             Configuration = configuration,
             Logger = "trx", // VSTest results format
             ResultsDirectory = Paths.TestResultsDirectory
-        });
+        },
+        new CoverletSettings
+        {
+            CollectCoverage = true,
+            CoverletOutputDirectory = Paths.CodeCoverageReportFile.GetDirectory(),
+            CoverletOutputName = Paths.CodeCoverageReportFile.GetFilename().ToString()
+        }
+        .WithFormat(CoverletOutputFormat.opencover));
 });
 
 Task("Version")
