@@ -52,7 +52,8 @@ Task("Test")
             CoverletOutputDirectory = Paths.CodeCoverageReportFile.GetDirectory(),
             CoverletOutputName = Paths.CodeCoverageReportFile.GetFilename().ToString()
         }
-        .WithFormat(CoverletOutputFormat.opencover));
+        .WithFormat(CoverletOutputFormat.opencover)
+        .WithFilter("[Linker.*Tests]*"));
 });
 
 Task("Version")
