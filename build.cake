@@ -147,6 +147,7 @@ Task("Publish-Coveralls-Code-Coverage-Report")
 });
 
 Task("Publish-Test-Results")
-    .IsDependentOn("Publish-AzurePipelines-Test-Results");
+    .IsDependentOn("Publish-AzurePipelines-Test-Results")
+    .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
 RunTarget(target);
