@@ -1,5 +1,9 @@
+#tool nuget:?package=coveralls.io&version=1.4.2
+
 #addin nuget:?package=Cake.Curl&version=4.0.0
 #addin nuget:?package=Cake.Incubator&version=5.0.1
+#addin nuget:?package=Cake.Coverlet&version=2.2.1
+#addin nuget:?package=Cake.Coveralls&version=0.9.0
 
 #load build/paths.cake
 #load build/version.cake
@@ -44,7 +48,15 @@ Task("Test")
             Configuration = configuration,
             Logger = "trx", // VSTest results format
             ResultsDirectory = Paths.TestResultsDirectory
-        });
+        },
+        new CoverletSettings
+        {
+            CollectCoverage = true,
+            CoverletOutputDirectory = Paths.CodeCoverageReportFile.GetDirectory(),
+            CoverletOutputName = Paths.CodeCoverageReportFile.GetFilename().ToString()
+        }
+        .WithFormat(CoverletOutputFormat.opencover)
+        .WithFilter("[Linker.*Tests]*"));
 });
 
 Task("Version")
@@ -120,7 +132,22 @@ Task("Publish-AzurePipelines-Test-Results")
         });
 });
 
+Task("Publish-Coveralls-Code-Coverage-Report")
+    .IsDependentOn("Test")
+    .WithCriteria(() => FileExists(Paths.CodeCoverageReportFile))
+    .WithCriteria(() => !BuildSystem.IsLocalBuild)
+    .Does(() =>
+{
+    CoverallsIo(
+        Paths.CodeCoverageReportFile,
+        new CoverallsIoSettings
+        {
+            RepoToken = EnvironmentVariable("CoverallsRepoToken")
+        });
+});
+
 Task("Publish-Test-Results")
-    .IsDependentOn("Publish-AzurePipelines-Test-Results");
+    .IsDependentOn("Publish-AzurePipelines-Test-Results")
+    .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
 RunTarget(target);
