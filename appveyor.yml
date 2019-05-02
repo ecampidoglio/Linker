@@ -6,7 +6,9 @@ environment:
   DeploymentUser: linker-deployer
   DeploymentPassword:
     secure: tSOPikPGEVpvuMYU27Vinw==
+  CoverallsRepoToken:
+    secure: 1tnIrlJsOiOQhaeR6uLCj8sM5leZbtO2JRJ0VxTO82Mt6lU1aAm4v5MpWWvHoCHC
 test: off
 deploy: off
 build_script:
-  - ps: .\build.ps1 -Target Test
+  - ps: .\build.ps1 -Target Publish-Test-Results
