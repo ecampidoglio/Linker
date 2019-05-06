@@ -6,4 +6,4 @@ steps:
     inputs:
       targetType: filePath
       filePath: ./build.ps1
-      arguments: '-Target Publish-Test-Results'
+      arguments: '-Target Build-CI'

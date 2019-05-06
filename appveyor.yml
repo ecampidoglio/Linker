@@ -11,4 +11,4 @@ environment:
 test: off
 deploy: off
 build_script:
-  - ps: .\build.ps1 -Target Publish-Test-Results
+  - ps: .\build.ps1 -Target Build-CI
