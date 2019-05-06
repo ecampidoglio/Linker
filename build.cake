@@ -25,7 +25,7 @@ Task("Clean")
     CleanDirectories("**/obj");
 });
 
-Task("Build")
+Task("Compile")
     .Does(() =>
 {
     DotNetCoreBuild(
@@ -149,5 +149,9 @@ Task("Publish-Coveralls-Code-Coverage-Report")
 Task("Publish-Test-Results")
     .IsDependentOn("Publish-AzurePipelines-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
+
+Task("Build")
+    .IsDependentOn("Compile")
+    .IsDependentOn("Test");
 
 RunTarget(target);
