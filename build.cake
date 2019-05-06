@@ -154,4 +154,11 @@ Task("Build")
     .IsDependentOn("Compile")
     .IsDependentOn("Test");
 
+Task("Build-CI")
+    .IsDependentOn("Compile")
+    .IsDependentOn("Test")
+    .IsDependentOn("Version")
+    .IsDependentOn("Package-Zip")
+    .IsDependentOn("Publish-Test-Results");
+
 RunTarget(target);
