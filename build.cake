@@ -146,6 +146,28 @@ Task("Publish-Coveralls-Code-Coverage-Report")
         });
 });
 
+Task("Set-Build-Number")
+    .IsDependentOn("Version")
+    .WithCriteria(() => !BuildSystem.IsLocalBuild)
+    .Does(() =>
+{
+    if (BuildSystem.IsRunningOnAzurePipelinesHosted)
+    {
+        TFBuild.Commands.UpdateBuildNumber(
+            $"{packageVersion}+{TFBuild.Environment.Build.Number}");
+    }
+    else if (BuildSystem.IsRunningOnAppVeyor)
+    {
+        AppVeyor.UpdateBuildVersion(
+            $"{packageVersion}+{AppVeyor.Environment.Build.Number}");
+    }
+    else if (BuildSystem.IsRunningOnTeamCity)
+    {
+        TeamCity.SetBuildNumber(
+            $"{packageVersion}+{TeamCity.Environment.Build.Number}");
+    }
+});
+
 Task("Publish-Test-Results")
     .IsDependentOn("Publish-AzurePipelines-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
@@ -159,6 +181,7 @@ Task("Build-CI")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
     .IsDependentOn("Package-Zip")
-    .IsDependentOn("Publish-Test-Results");
+    .IsDependentOn("Publish-Test-Results")
+    .IsDependentOn("Set-Build-Number");
 
 RunTarget(target);
