@@ -1,8 +1,8 @@
 # Linker ![](https://github.com/ecampidoglio/Linker/blob/master/Icon.png)
 
-|  Azure Pipelines | AppVeyor | Travis CI | Coveralls |
-|  :-------------: | :------: | :-------: | :-------: |
-| [![Azure Pipelines](https://img.shields.io/azure-devops/build/megakemp/24a2406e-4c2e-40a4-a766-7ad55e45178f/3.svg)](https://megakemp.visualstudio.com/Linker/_build/latest?definitionId=3&branchName=master) | [![AppVeyor](https://img.shields.io/appveyor/ci/ecampidoglio/linker.svg)](https://ci.appveyor.com/project/ecampidoglio/linker) | [![Travis CI](https://img.shields.io/travis/ecampidoglio/Linker.svg)](https://travis-ci.org/ecampidoglio/Linker) | [![Coveralls](https://img.shields.io/coveralls/github/ecampidoglio/Linker.svg)](https://coveralls.io/github/ecampidoglio/Linker) |
+|  Azure Pipelines | AppVeyor | TeamCity | Travis CI | Coveralls |
+|  :-------------: | :------: | :------: | :-------: | :-------: |
+| [![Azure Pipelines](https://img.shields.io/azure-devops/build/megakemp/24a2406e-4c2e-40a4-a766-7ad55e45178f/3.svg)](https://megakemp.visualstudio.com/Linker/_build/latest?definitionId=3&branchName=master) | [![AppVeyor](https://img.shields.io/appveyor/ci/ecampidoglio/linker.svg)](https://ci.appveyor.com/project/ecampidoglio/linker) | [![TeamCity](https://img.shields.io/teamcity/http/delivery-megakemp.northeurope.cloudapp.azure.com:8080/s/Linker_Build_master.svg)](http://delivery-megakemp.northeurope.cloudapp.azure.com:8080/viewType.html?buildTypeId=Linker_Build_master&guest=1) | [![Travis CI](https://img.shields.io/travis/ecampidoglio/Linker.svg)](https://travis-ci.org/ecampidoglio/Linker) | [![Coveralls](https://img.shields.io/coveralls/github/ecampidoglio/Linker.svg)](https://coveralls.io/github/ecampidoglio/Linker) |
 
 Linker is a _really_ simple web-based URL shortening service.
 
