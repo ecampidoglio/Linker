@@ -135,7 +135,7 @@ Task("Publish-AzurePipelines-Test-Results")
 Task("Publish-Coveralls-Code-Coverage-Report")
     .IsDependentOn("Test")
     .WithCriteria(() => FileExists(Paths.CodeCoverageReportFile))
-    .WithCriteria(() => !BuildSystem.IsLocalBuild)
+    .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
     .Does(() =>
 {
     CoverallsIo(
