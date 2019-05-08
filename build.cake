@@ -132,6 +132,19 @@ Task("Publish-AzurePipelines-Test-Results")
         });
 });
 
+Task("Publish-TeamCity-Test-Results")
+    .IsDependentOn("Test")
+    .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
+    .Does(() =>
+{
+    var testResults = GetFiles(Paths.TestResultsDirectory + "/*.trx");
+
+    foreach (var result in testResults)
+    {
+        TeamCity.ImportData("vstest", result);
+    }
+});
+
 Task("Publish-Coveralls-Code-Coverage-Report")
     .IsDependentOn("Test")
     .WithCriteria(() => FileExists(Paths.CodeCoverageReportFile))
@@ -170,6 +183,7 @@ Task("Set-Build-Number")
 
 Task("Publish-Test-Results")
     .IsDependentOn("Publish-AzurePipelines-Test-Results")
+    .IsDependentOn("Publish-TeamCity-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
 Task("Build")
