@@ -41,6 +41,23 @@ Task("Test")
 {
     CleanDirectory(Paths.TestResultsDirectory);
 
+    var coverageSettings = new CoverletSettings
+    {
+        CollectCoverage = true,
+        CoverletOutputDirectory = Paths.CodeCoverageReportFile.GetDirectory(),
+        CoverletOutputName = Paths.CodeCoverageReportFile.GetFilename().ToString()
+    }
+    .WithFilter("[Linker.*Tests]*");
+
+    if (BuildSystem.IsRunningOnTeamCity)
+    {
+        coverageSettings.CoverletOutputFormat = CoverletOutputFormat.teamcity;
+    }
+    else
+    {
+        coverageSettings.CoverletOutputFormat = CoverletOutputFormat.opencover;
+    }
+
     DotNetCoreTest(
         Paths.TestProjectFile.FullPath,
         new DotNetCoreTestSettings
@@ -49,14 +66,7 @@ Task("Test")
             Logger = "trx", // VSTest results format
             ResultsDirectory = Paths.TestResultsDirectory
         },
-        new CoverletSettings
-        {
-            CollectCoverage = true,
-            CoverletOutputDirectory = Paths.CodeCoverageReportFile.GetDirectory(),
-            CoverletOutputName = Paths.CodeCoverageReportFile.GetFilename().ToString()
-        }
-        .WithFormat(CoverletOutputFormat.opencover)
-        .WithFilter("[Linker.*Tests]*"));
+        coverageSettings);
 });
 
 Task("Version")
