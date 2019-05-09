@@ -1,3 +1,5 @@
+#load paths.cake
+
 public static string ReadVersionNumberFromProject(ICakeContext context)
 {
     var versionNode = "/Project/PropertyGroup/Version/text()";
