@@ -53,6 +53,10 @@ Task("Test")
     {
         coverageSettings.CoverletOutputFormat = CoverletOutputFormat.teamcity;
     }
+    else if (BuildSystem.IsRunningOnAzurePipelinesHosted)
+    {
+        coverageSettings.CoverletOutputFormat = CoverletOutputFormat.cobertura;
+    }
     else
     {
         coverageSettings.CoverletOutputFormat = CoverletOutputFormat.opencover;
@@ -142,6 +146,20 @@ Task("Publish-AzurePipelines-Test-Results")
         });
 });
 
+Task("Publish-AzurePipelines-Code-Coverage-Report")
+    .IsDependentOn("Test")
+    .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
+    .Does(() =>
+{
+    TFBuild.Commands.PublishCodeCoverage(
+        new TFBuildPublishCodeCoverageData
+        {
+            CodeCoverageTool = TFCodeCoverageToolType.Cobertura,
+            SummaryFileLocation = Paths.CodeCoverageReportFile
+        }
+    );
+});
+
 Task("Publish-TeamCity-Test-Results")
     .IsDependentOn("Test")
     .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
@@ -193,6 +211,7 @@ Task("Set-Build-Number")
 
 Task("Publish-Test-Results")
     .IsDependentOn("Publish-AzurePipelines-Test-Results")
+    .IsDependentOn("Publish-AzurePipelines-Code-Coverage-Report")
     .IsDependentOn("Publish-TeamCity-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
