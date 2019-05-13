@@ -188,6 +188,17 @@ Task("Publish-Coveralls-Code-Coverage-Report")
         });
 });
 
+Task("Publish-AppVeyor-Artifacts")
+    .IsDependentOn("Package-Zip")
+    .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
+    .Does(() =>
+{
+    foreach (var package in GetFiles(packageOutputPath))
+    {
+        AppVeyor.UploadArtifact(package);
+    }
+});
+
 Task("Set-Build-Number")
     .IsDependentOn("Version")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
@@ -216,6 +227,9 @@ Task("Publish-Test-Results")
     .IsDependentOn("Publish-TeamCity-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
+Task("Publish-Artifacts")
+    .IsDependentOn("Publish-AppVeyor-Artifacts");
+
 Task("Build")
     .IsDependentOn("Compile")
     .IsDependentOn("Test");
@@ -226,6 +240,7 @@ Task("Build-CI")
     .IsDependentOn("Version")
     .IsDependentOn("Package-Zip")
     .IsDependentOn("Publish-Test-Results")
+    .IsDependentOn("Publish-Artifacts")
     .IsDependentOn("Set-Build-Number");
 
 RunTarget(target);
