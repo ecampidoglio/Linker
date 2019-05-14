@@ -188,6 +188,14 @@ Task("Publish-Coveralls-Code-Coverage-Report")
         });
 });
 
+Task("Publish-AzurePipelines-Artifacts")
+    .IsDependentOn("Package-Zip")
+    .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
+    .Does(() =>
+{
+    TFBuild.Commands.UploadArtifactDirectory(packageOutputPath);
+});
+
 Task("Publish-AppVeyor-Artifacts")
     .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
@@ -228,6 +236,7 @@ Task("Publish-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
 Task("Publish-Artifacts")
+    .IsDependentOn("Publish-AzurePipelines-Artifacts")
     .IsDependentOn("Publish-AppVeyor-Artifacts");
 
 Task("Build")
