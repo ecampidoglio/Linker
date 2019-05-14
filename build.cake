@@ -207,6 +207,14 @@ Task("Publish-AppVeyor-Artifacts")
     }
 });
 
+Task("Publish-TeamCity-Artifacts")
+    .IsDependentOn("Package-Zip")
+    .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
+    .Does(() =>
+{
+    TeamCity.PublishArtifacts(packageOutputPath);
+});
+
 Task("Set-Build-Number")
     .IsDependentOn("Version")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
@@ -237,7 +245,8 @@ Task("Publish-Test-Results")
 
 Task("Publish-Artifacts")
     .IsDependentOn("Publish-AzurePipelines-Artifacts")
-    .IsDependentOn("Publish-AppVeyor-Artifacts");
+    .IsDependentOn("Publish-AppVeyor-Artifacts")
+    .IsDependentOn("Publish-TeamCity-Artifacts");
 
 Task("Build")
     .IsDependentOn("Compile")
