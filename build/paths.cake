@@ -6,6 +6,7 @@ public static class Paths
     public static DirectoryPath TestResultsDirectory => "testResults";
     public static FilePath CodeCoverageReportFile => TestResultsDirectory + "/coverage.xml";
     public static DirectoryPath PublishDirectory => "publish";
+    public static DirectoryPath RepoDirectory => ".";
 }
 
 public static FilePath Combine(DirectoryPath directory, FilePath file)

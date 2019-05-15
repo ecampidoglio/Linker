@@ -117,6 +117,7 @@ Task("Package-Zip")
 
 Task("Deploy")
     .IsDependentOn("Package-Zip")
+    .WithCriteria(context => context.LatestCommitHasVersionTag(), "The latest commit doesn't have a version tag")
     .Does(() =>
 {
     CurlUploadFile(
