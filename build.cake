@@ -202,7 +202,7 @@ Task("Publish-AppVeyor-Artifacts")
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
     .Does(() =>
 {
-    foreach (var package in GetFiles(packageOutputPath))
+    foreach (var package in GetFiles(packageOutputPath.Path + "/*.zip"))
     {
         AppVeyor.UploadArtifact(package);
     }
