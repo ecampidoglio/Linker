@@ -262,4 +262,9 @@ Task("Build-CI")
     .IsDependentOn("Publish-Artifacts")
     .IsDependentOn("Set-Build-Number");
 
+Task("Deploy-CI")
+    .IsDependentOn("Deploy")
+    .IsDependentOn("Publish-Artifacts")
+    .IsDependentOn("Set-Build-Number");
+
 RunTarget(target);
