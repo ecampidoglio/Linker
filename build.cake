@@ -76,7 +76,7 @@ Task("Test")
 Task("Version")
     .Does(() =>
 {
-    packageVersion = ReadVersionNumberFromProject(Context);
+    packageVersion = ReadVersionFromProjectFile(Context);
     Information($"Read package version {packageVersion}");
 });
 
