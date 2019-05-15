@@ -8,6 +8,6 @@ branches:
   only:
     - master
 script:
-  - ./build.sh --target=Deploy
+  - ./build.sh --target=Deploy-CI
 env:
   - DeployTo="https://linker-demo.scm.azurewebsites.net/api/zipdeploy"
