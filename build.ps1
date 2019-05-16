@@ -44,7 +44,7 @@ Param(
     [ValidateSet("Debug", "Release")]
     [string]$Configuration = "Release",
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
-    [string]$Verbosity = "Normal",
+    [string]$Verbosity = "Verbose",
     [string]$DeploymentUser = $null,
     [string]$DeploymentPassword = $null,
     [switch]$ShowDescription,
