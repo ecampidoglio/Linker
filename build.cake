@@ -1,6 +1,6 @@
 #tool nuget:?package=coveralls.io&version=1.4.2
 
-#addin nuget:?package=Cake.Curl&version=4.0.0
+#addin nuget:?package=Cake.Curl&version=4.1.0
 #addin nuget:?package=Cake.Incubator&version=5.0.1
 #addin nuget:?package=Cake.Coverlet&version=2.2.1
 #addin nuget:?package=Cake.Coveralls&version=0.9.0
