@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/src/Linker/bin/Debug/netcoreapp1.0/Linker.dll",
+            "program": "${workspaceRoot}/src/Linker/bin/Debug/netcoreapp2.1/Linker.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "externalConsole": false,
