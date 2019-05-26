@@ -3,4 +3,4 @@ branches:
     increment: Patch
   develop:
     increment: Minor
-    tag: alpha
+    tag: preview
