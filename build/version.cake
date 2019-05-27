@@ -7,7 +7,14 @@ using System.Text.RegularExpressions;
 public static string ReadVersionFromProjectFile(ICakeContext context)
 {
     var versionNode = "/Project/PropertyGroup/Version/text()";
-    return context.XmlPeek(Paths.ProjectFile, versionNode);
+
+    return context.XmlPeek(
+        Paths.ProjectFile,
+        versionNode,
+        new XmlPeekSettings
+        {
+            SuppressWarning = true
+        });
 }
 
 public static bool LatestCommitHasVersionTag(this ICakeContext context)

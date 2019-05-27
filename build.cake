@@ -1,3 +1,4 @@
+#tool nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012
 #tool nuget:?package=coveralls.io&version=1.4.2
 
 #addin nuget:?package=Cake.Curl&version=4.1.0
@@ -77,7 +78,16 @@ Task("Version")
     .Does(() =>
 {
     packageVersion = ReadVersionFromProjectFile(Context);
-    Information($"Read package version {packageVersion}");
+
+    if (packageVersion != null)
+    {
+        Information($"Read version {packageVersion} from project file");
+    }
+    else
+    {
+        packageVersion = GitVersion().FullSemVer;
+        Information($"Calculated version {packageVersion} from Git history");
+    }
 });
 
 Task("Package-NuGet")
