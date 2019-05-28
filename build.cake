@@ -111,9 +111,9 @@ Task("Package-NuGet")
 });
 
 Task("Package-WebDeploy")
+    .WithCriteria(IsRunningOnWindows(), "MSDeploy is only available on Windows")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
-    .WithCriteria(IsRunningOnWindows(), "MSDeploy is only available on Windows")
     .Does<PackageMetadata>(package =>
 {
     CleanDirectory(package.OutputDirectory);
@@ -147,8 +147,8 @@ Task("Package-Zip")
 });
 
 Task("Deploy-WebDeploy")
-    .IsDependentOn("Package-WebDeploy")
     .WithCriteria(IsRunningOnWindows(), "MSDeploy is only available on Windows")
+    .IsDependentOn("Package-WebDeploy")
     .Does(() =>
 {
     DotNetCoreMSBuild(
@@ -164,8 +164,8 @@ Task("Deploy-WebDeploy")
 });
 
 Task("Deploy-Kudu")
-    .IsDependentOn("Package-Zip")
     .WithCriteria(context => context.LatestCommitHasVersionTag(), "The latest commit doesn't have a version tag")
+    .IsDependentOn("Package-Zip")
     .Does<PackageMetadata>(package =>
 {
     CurlUploadFile(
@@ -181,8 +181,8 @@ Task("Deploy-Kudu")
 });
 
 Task("Publish-AzurePipelines-Test-Results")
-    .IsDependentOn("Test")
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
+    .IsDependentOn("Test")
     .Does(() =>
 {
     BuildSystem.TFBuild.Commands.PublishTestResults(
@@ -196,9 +196,9 @@ Task("Publish-AzurePipelines-Test-Results")
 });
 
 Task("Publish-AzurePipelines-Code-Coverage-Report")
-    .IsDependentOn("Test")
     .WithCriteria(() => FileExists(Paths.CodeCoverageReportFile))
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
+    .IsDependentOn("Test")
     .Does(() =>
 {
     TFBuild.Commands.PublishCodeCoverage(
@@ -211,8 +211,8 @@ Task("Publish-AzurePipelines-Code-Coverage-Report")
 });
 
 Task("Publish-TeamCity-Test-Results")
-    .IsDependentOn("Test")
     .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
+    .IsDependentOn("Test")
     .Does(() =>
 {
     var testResults = GetFiles(Paths.TestResultsDirectory + "/*.trx");
@@ -224,9 +224,9 @@ Task("Publish-TeamCity-Test-Results")
 });
 
 Task("Publish-Coveralls-Code-Coverage-Report")
-    .IsDependentOn("Test")
     .WithCriteria(() => FileExists(Paths.CodeCoverageReportFile))
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
+    .IsDependentOn("Test")
     .Does(() =>
 {
     CoverallsIo(
@@ -238,16 +238,16 @@ Task("Publish-Coveralls-Code-Coverage-Report")
 });
 
 Task("Publish-AzurePipelines-Artifacts")
-    .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
+    .IsDependentOn("Package-Zip")
     .Does<PackageMetadata>(package =>
 {
     TFBuild.Commands.UploadArtifactDirectory(package.OutputDirectory);
 });
 
 Task("Publish-AppVeyor-Artifacts")
-    .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
+    .IsDependentOn("Package-Zip")
     .Does<PackageMetadata>(package =>
 {
     foreach (var packageFile in GetFiles(package.OutputDirectory + "/*.zip"))
@@ -257,16 +257,16 @@ Task("Publish-AppVeyor-Artifacts")
 });
 
 Task("Publish-TeamCity-Artifacts")
-    .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
+    .IsDependentOn("Package-Zip")
     .Does<PackageMetadata>(package =>
 {
     TeamCity.PublishArtifacts(package.OutputDirectory.FullPath);
 });
 
 Task("Set-Build-Number")
-    .IsDependentOn("Version")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
+    .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
     if (BuildSystem.IsRunningOnAzurePipelinesHosted)
