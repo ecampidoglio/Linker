@@ -43,6 +43,7 @@ Task("Compile")
 });
 
 Task("Test")
+    .IsDependentOn("Compile")
     .Does(() =>
 {
     CleanDirectory(Paths.TestResultsDirectory);
