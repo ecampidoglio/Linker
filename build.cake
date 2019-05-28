@@ -128,14 +128,14 @@ Task("Package-Zip")
     Zip(Paths.PublishDirectory, package.FullPath);
 });
 
-Task("Deploy")
+Task("Deploy-Kudu")
     .IsDependentOn("Package-Zip")
     .WithCriteria(context => context.LatestCommitHasVersionTag(), "The latest commit doesn't have a version tag")
     .Does<PackageMetadata>(package =>
 {
     CurlUploadFile(
         package.FullPath,
-        EnvironmentVariable<Uri>("DeployTo", Urls.DeploymentUrl),
+        EnvironmentVariable<Uri>("DeployTo", Urls.KuduDeployUrl),
         new CurlSettings
         {
             Username = EnvironmentVariable("DeploymentUser"),
@@ -276,7 +276,7 @@ Task("Build-CI")
     .IsDependentOn("Set-Build-Number");
 
 Task("Deploy-CI")
-    .IsDependentOn("Deploy")
+    .IsDependentOn("Deploy-Kudu")
     .IsDependentOn("Publish-Artifacts")
     .IsDependentOn("Set-Build-Number");
 
