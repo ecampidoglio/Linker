@@ -7,19 +7,24 @@
 #addin nuget:?package=Cake.Coveralls&version=0.9.0
 
 #load build/paths.cake
+#load build/package.cake
 #load build/version.cake
 #load build/urls.cake
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Release");
-var packageOutputPath = Directory(Argument("packageOutputPath", "packages"));
 
-var packageVersion = "0.1.0";
+Setup<PackageMetadata>(context =>
+    new PackageMetadata(
+        outputDirectory: Argument("packageOutputPath", "packages"),
+        name: "Linker",
+        version: "0.1.0")
+);
 
 Task("Clean")
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(packageOutputPath);
+    CleanDirectory(package.OutputDirectory);
     CleanDirectory(Paths.TestResultsDirectory);
     CleanDirectory(Paths.PublishDirectory);
     CleanDirectories("**/bin");
@@ -75,42 +80,42 @@ Task("Test")
 });
 
 Task("Version")
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    packageVersion = ReadVersionFromProjectFile(Context);
+    package.Version = ReadVersionFromProjectFile(Context);
 
-    if (packageVersion != null)
+    if (package.Version != null)
     {
-        Information($"Read version {packageVersion} from project file");
+        Information($"Read version {package.Version} from project file");
     }
     else
     {
-        packageVersion = GitVersion().FullSemVer;
-        Information($"Calculated version {packageVersion} from Git history");
+        package.Version = GitVersion().FullSemVer;
+        Information($"Calculated version {package.Version} from Git history");
     }
 });
 
 Task("Package-NuGet")
     .IsDependentOn("Test")
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(packageOutputPath);
+    CleanDirectory(package.OutputDirectory);
 
     DotNetCorePack(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePackSettings
         {
             Configuration = configuration,
-            OutputDirectory = packageOutputPath
+            OutputDirectory = package.OutputDirectory
         });
 });
 
 Task("Package-Zip")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(packageOutputPath);
+    CleanDirectory(package.OutputDirectory);
 
     DotNetCorePublish(
         Paths.ProjectFile.GetDirectory().FullPath,
@@ -120,18 +125,16 @@ Task("Package-Zip")
             OutputDirectory = Paths.PublishDirectory
         });
 
-    Zip(
-        Paths.PublishDirectory,
-        Combine(packageOutputPath, $"Linker.{packageVersion}.zip"));
+    Zip(Paths.PublishDirectory, package.FullPath);
 });
 
 Task("Deploy")
     .IsDependentOn("Package-Zip")
     .WithCriteria(context => context.LatestCommitHasVersionTag(), "The latest commit doesn't have a version tag")
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
     CurlUploadFile(
-        Combine(packageOutputPath, $"Linker.{packageVersion}.zip"),
+        package.FullPath,
         EnvironmentVariable<Uri>("DeployTo", Urls.DeploymentUrl),
         new CurlSettings
         {
@@ -202,49 +205,49 @@ Task("Publish-Coveralls-Code-Coverage-Report")
 Task("Publish-AzurePipelines-Artifacts")
     .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    TFBuild.Commands.UploadArtifactDirectory(packageOutputPath);
+    TFBuild.Commands.UploadArtifactDirectory(package.OutputDirectory);
 });
 
 Task("Publish-AppVeyor-Artifacts")
     .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    foreach (var package in GetFiles(packageOutputPath.Path + "/*.zip"))
+    foreach (var packageFile in GetFiles(package.OutputDirectory + "/*.zip"))
     {
-        AppVeyor.UploadArtifact(package);
+        AppVeyor.UploadArtifact(packageFile);
     }
 });
 
 Task("Publish-TeamCity-Artifacts")
     .IsDependentOn("Package-Zip")
     .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
-    TeamCity.PublishArtifacts(packageOutputPath);
+    TeamCity.PublishArtifacts(package.OutputDirectory.FullPath);
 });
 
 Task("Set-Build-Number")
     .IsDependentOn("Version")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
-    .Does(() =>
+    .Does<PackageMetadata>(package =>
 {
     if (BuildSystem.IsRunningOnAzurePipelinesHosted)
     {
         TFBuild.Commands.UpdateBuildNumber(
-            $"{packageVersion}+{TFBuild.Environment.Build.Number}");
+            $"{package.Version}+{TFBuild.Environment.Build.Number}");
     }
     else if (BuildSystem.IsRunningOnAppVeyor)
     {
         AppVeyor.UpdateBuildVersion(
-            $"{packageVersion}+{AppVeyor.Environment.Build.Number}");
+            $"{package.Version}+{AppVeyor.Environment.Build.Number}");
     }
     else if (BuildSystem.IsRunningOnTeamCity)
     {
         TeamCity.SetBuildNumber(
-            $"{packageVersion}+{TeamCity.Environment.Build.Number}");
+            $"{package.Version}+{TeamCity.Environment.Build.Number}");
     }
 });
 
