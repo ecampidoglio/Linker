@@ -8,8 +8,3 @@ public static class Paths
     public static DirectoryPath PublishDirectory => "publish";
     public static DirectoryPath RepoDirectory => ".";
 }
-
-public static FilePath Combine(DirectoryPath directory, FilePath file)
-{
-    return directory.CombineWithFilePath(file);
-}
