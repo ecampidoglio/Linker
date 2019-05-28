@@ -110,6 +110,24 @@ Task("Package-NuGet")
         });
 });
 
+Task("Package-WebDeploy")
+    .IsDependentOn("Test")
+    .IsDependentOn("Version")
+    .WithCriteria(IsRunningOnWindows(), "MSDeploy is only available on Windows")
+    .Does<PackageMetadata>(package =>
+{
+    CleanDirectory(package.OutputDirectory);
+
+    DotNetCoreMSBuild(
+        Paths.ProjectFile.FullPath,
+        new DotNetCoreMSBuildSettings()
+            .SetConfiguration(configuration)
+            .WithProperty("DeployOnBuild", "true")
+            .WithProperty("WebPublishMethod", "Package")
+            .WithProperty("PackageLocation", MakeAbsolute(File(package.FullPath)).FullPath)
+    );
+});
+
 Task("Package-Zip")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
@@ -126,6 +144,23 @@ Task("Package-Zip")
         });
 
     Zip(Paths.PublishDirectory, package.FullPath);
+});
+
+Task("Deploy-WebDeploy")
+    .IsDependentOn("Package-WebDeploy")
+    .WithCriteria(IsRunningOnWindows(), "MSDeploy is only available on Windows")
+    .Does(() =>
+{
+    DotNetCoreMSBuild(
+        Paths.ProjectFile.FullPath,
+        new DotNetCoreMSBuildSettings()
+            .WithProperty("DeployOnBuild", "true")
+            .WithProperty("WebPublishMethod", "MSDeploy")
+            .WithProperty("MSDeployServiceURL", Urls.WebDeployUrl.ToString())
+            .WithProperty("DeployIisAppPath", "Linker-Demo")
+            .WithProperty("UserName", EnvironmentVariable("DeploymentUser"))
+            .WithProperty("Password", EnvironmentVariable("DeploymentPassword"))
+    );
 });
 
 Task("Deploy-Kudu")
