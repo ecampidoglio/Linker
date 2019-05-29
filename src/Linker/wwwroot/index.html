@@ -4,12 +4,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Linker – A simple URL shortening service for demo purposes</title>
-    <link href="/style/main.css" rel="stylesheet">
+    <link href="/css/main.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.css" rel="stylesheet">
     <script src="https://use.fontawesome.com/44db616403.js" async></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/jquery.webui-popover/1.2.1/jquery.webui-popover.min.js"></script>
+    <script src="/js/app.min.js"></script>
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -19,51 +17,14 @@
         ga('create', 'UA-5422661-3', 'auto');
         ga('send', 'pageview');
     </script>
-    <script>
-        $(function() {
-            $('#tooltip').webuiPopover({
-                width: 426,
-                placement: 'top',
-                offsetTop: -10,
-                offsetLeft: 500,
-                animation:'pop'
-            });
-
-            $('#url').keyup(function(event) {
-                if (event.keyCode === 13) {
-                    $('#submit').click();
-                }
-            });
-
-            $('#submit').bind('click', function() {
-                $('#link').hide();
-                $('#error').hide();
-                $('#spinner').show();
-
-                $.post(
-                    '/link',
-                    {
-                        url: $('#url').val()
-                    }
-                ).done(function(data, status, request) {
-                    var url = request.getResponseHeader('Location');
-                    $('#link').attr('href', url).text(url);
-                    $('#link').show();
-                }).fail(function(data, status, error) {
-                    $('#error').text(error);
-                    $('#error').show();
-                }).always(function() {
-                    $('#spinner').hide();
-                });
-            });
-        });
-    </script>
 </head>
 
 <body>
     <div id="container">
         <input type="text" id="url" placeholder="https://" autofocus />
+
         <a id="tooltip" href="#"><img src="/images/logo.png" id="logo" alt="What's this?" /></a>
+
         <div id="about" class="webui-popover-content">
             <h3><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;What's this?</h3>
             <p>Linker is an <em>extremely simple</em> URL shortening website designed to serve as a nice demo application.<br/>
