@@ -68,6 +68,9 @@ nCrunchTemp_*
 *.nuget.props
 *.nuget.targets
 
+# Node.js
+**/node_modules/
+
 # Cake
 tools/**
 !tools/packages.config
