@@ -1,0 +1,42 @@
+{
+  "name": "linker",
+  "version": "1.0.0",
+  "description": "\"A simple URL shortening website that serves as a nice demo application.\"",
+  "scripts": {
+    "scss": "node-sass -o wwwroot/css Styles/main.scss",
+    "bundle:css": "copyfiles -f node_modules/webui-popover/src/*.css wwwroot/css",
+    "bundle:js": "browserify -o wwwroot/js/app.js Scripts/app.js",
+    "min:css": "cleancss -O2 -o wwwroot/css/main.min.css wwwroot/css/*.css",
+    "min:js": "uglifyjs -c -m -o wwwroot/js/app.min.js wwwroot/js/app.js",
+    "build:css": "npm run scss && npm run bundle:css && npm run min:css",
+    "build:js": "npm run bundle:js && npm run min:js",
+    "build": "npm run build:css && npm run build:js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecampidoglio/Linker.git"
+  },
+  "keywords": [
+    "demo"
+  ],
+  "author": "Enrico Campidoglio",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ecampidoglio/Linker/issues"
+  },
+  "homepage": "https://github.com/ecampidoglio/Linker",
+  "browser": {
+    "webui-popover": "./node_modules/webui-popover/src/jquery.webui-popover.js"
+  },
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "clean-css-cli": "^4.3.0",
+    "copyfiles": "^2.1.0",
+    "node-sass": "^4.12.0",
+    "uglify-js": "^3.5.15"
+  },
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "webui-popover": "^1.2.18"
+  }
+}
