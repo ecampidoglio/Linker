@@ -1,6 +1,7 @@
 #tool nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012
 #tool nuget:?package=coveralls.io&version=1.4.2
 
+#addin nuget:?package=Cake.Npm&version=0.17.0
 #addin nuget:?package=Cake.Curl&version=4.1.0
 #addin nuget:?package=Cake.Incubator&version=5.0.1
 #addin nuget:?package=Cake.Coverlet&version=2.2.1
@@ -94,6 +95,14 @@ Task("Version")
         package.Version = GitVersion().FullSemVer;
         Information($"Calculated version {package.Version} from Git history");
     }
+});
+
+Task("Build-Frontend")
+    .Does(() =>
+{
+    NpmInstall(settings => settings.FromPath(Paths.ProjectDirectory));
+
+    NpmRunScript("build", settings => settings.FromPath(Paths.ProjectDirectory));
 });
 
 Task("Package-NuGet")
@@ -300,12 +309,14 @@ Task("Publish-Artifacts")
 
 Task("Build")
     .IsDependentOn("Compile")
-    .IsDependentOn("Test");
+    .IsDependentOn("Test")
+    .IsDependentOn("Build-Frontend");
 
 Task("Build-CI")
     .IsDependentOn("Compile")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
+    .IsDependentOn("Build-Frontend")
     .IsDependentOn("Package-Zip")
     .IsDependentOn("Publish-Test-Results")
     .IsDependentOn("Publish-Artifacts")

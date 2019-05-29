@@ -1,0 +1,117 @@
+$background-color: #fff;
+$foreground-color: #555;
+$accent-color: #e87830;
+$highlight-color: #161616;
+$error-color: #900f21;
+
+$container-width: 532px;
+
+%text {
+  font: {
+    size: 18px;
+    weight: 400;
+  }
+}
+
+%tooltip-text {
+  font: {
+    size: 15px;
+    weight: 300;
+  }
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: $foreground-color;
+}
+
+a {
+  color: $accent-color;
+  text-decoration: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+#container {
+  width: $container-width;
+  height: 100px;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#url {
+  @extend %text;
+  padding: 0 15px;
+  width: 500px;
+  height: 42px;
+  border: 1px solid $accent-color;
+  $radius: 28px;
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+}
+
+#about {
+  @extend %tooltip-text;
+  line-height: 150%;
+}
+
+#logo {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 7px;
+  right: 18px;
+}
+
+#submit {
+  @extend %text;
+  width: 154px;
+  height: 37px;
+  position: relative;
+  left: 189px;
+  top: 15px;
+  background-color: $foreground-color;
+  color: $background-color;
+  border: 1px solid $foreground-color;
+  $radius: 10px;
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+
+  &:hover {
+    background-color: $highlight-color;
+    border-color: $highlight-color;
+  }
+
+  &:active {
+    top: 16px;
+  }
+}
+
+#spinner {
+  display: none;
+  position: relative;
+  left: 100px;
+  top: 54px;
+}
+
+#result {
+  @extend %text;
+  width: $container-width;
+  position: relative;
+  top: 32px;
+  text-align: center;
+}
+
+#error {
+  @extend %text;
+  color: $error-color;
+  font-style: italic;
+}
