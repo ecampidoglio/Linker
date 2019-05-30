@@ -6,8 +6,9 @@ var api = require('./api');
 $(function () {
     $('#tooltip').webuiPopover({
         width: 426,
+        height: 138,
         placement: 'top',
-        offsetTop: -10,
+        offsetTop: -48,
         offsetLeft: 500,
         animation:'pop'
     });
