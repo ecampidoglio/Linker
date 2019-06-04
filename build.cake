@@ -150,7 +150,13 @@ Task("Package-Zip")
         new DotNetCorePublishSettings
         {
             Configuration = configuration,
-            OutputDirectory = Paths.PublishDirectory
+            OutputDirectory = Paths.PublishDirectory,
+            NoRestore = true,
+            NoBuild = true,
+            MSBuildSettings = new DotNetCoreMSBuildSettings
+            {
+                NoLogo = true
+            }
         });
 
     Zip(Paths.PublishDirectory, package.FullPath);
