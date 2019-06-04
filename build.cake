@@ -1,5 +1,6 @@
 #tool nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012
 #tool nuget:?package=coveralls.io&version=1.4.2
+#tool nuget:?package=OctopusTools&version=6.7.0
 
 #addin nuget:?package=Cake.Npm&version=0.17.0
 #addin nuget:?package=Cake.Curl&version=4.1.0
@@ -160,6 +161,37 @@ Task("Package-Zip")
         });
 
     Zip(Paths.PublishDirectory, package.FullPath);
+});
+
+Task("Package-Octopus")
+    .IsDependentOn("Test")
+    .IsDependentOn("Version")
+    .Does<PackageMetadata>(package =>
+{
+    CleanDirectory(package.OutputDirectory);
+
+    DotNetCorePublish(
+        Paths.ProjectFile.GetDirectory().FullPath,
+        new DotNetCorePublishSettings
+        {
+            Configuration = configuration,
+            OutputDirectory = Paths.PublishDirectory,
+            NoRestore = true,
+            NoBuild = true,
+            MSBuildSettings = new DotNetCoreMSBuildSettings
+            {
+                NoLogo = true
+            }
+        });
+
+    OctoPack(
+        package.Name,
+        new OctopusPackSettings {
+            Format = OctopusPackFormat.Zip,
+            Version = package.Version,
+            BasePath = Paths.PublishDirectory,
+            OutFolder = package.OutputDirectory
+        });
 });
 
 Task("Deploy-WebDeploy")
