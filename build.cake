@@ -15,6 +15,7 @@
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Release");
+var deployToEnvironment = Argument("deployTo", "Development");
 
 Setup<PackageMetadata>(context =>
     new PackageMetadata(
@@ -225,6 +226,34 @@ Task("Deploy-Kudu")
             Password = EnvironmentVariable("DeploymentPassword"),
             RequestCommand = "POST",
             ArgumentCustomization = args => args.Append("--fail")
+        });
+});
+
+Task("Deploy-Octopus")
+    .IsDependentOn("Package-Octopus")
+    .Does<PackageMetadata>(package =>
+{
+    OctoPush(
+        Urls.OctopusDeployServerUrl.AbsoluteUri,
+        EnvironmentVariable("OctopusApiKey"),
+        package.FullPath,
+        new OctopusPushSettings
+        {
+            EnableServiceMessages = true
+        });
+
+    OctoCreateRelease(
+        "Linker",
+        new CreateReleaseSettings
+        {
+            Server = Urls.OctopusDeployServerUrl.AbsoluteUri,
+            ApiKey = EnvironmentVariable("OctopusApiKey"),
+            ReleaseNumber = package.Version,
+            DefaultPackageVersion = package.Version,
+            DeployTo = deployToEnvironment,
+            IgnoreExisting = true,
+            DeploymentProgress = true,
+            WaitForDeployment = true
         });
 });
 
