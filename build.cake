@@ -113,6 +113,8 @@ Task("Package-NuGet")
 {
     CleanDirectory(package.OutputDirectory);
 
+    package.Extension = "nupkg";
+
     DotNetCorePack(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePackSettings
