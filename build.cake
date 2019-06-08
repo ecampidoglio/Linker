@@ -132,6 +132,8 @@ Task("Package-WebDeploy")
 {
     CleanDirectory(package.OutputDirectory);
 
+    package.Extension = "zip";
+
     DotNetCoreMSBuild(
         Paths.ProjectFile.FullPath,
         new DotNetCoreMSBuildSettings()
