@@ -151,6 +151,8 @@ Task("Package-Zip")
 {
     CleanDirectory(package.OutputDirectory);
 
+    package.Extension = "zip";
+
     DotNetCorePublish(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePublishSettings
