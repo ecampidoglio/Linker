@@ -177,6 +177,8 @@ Task("Package-Octopus")
 {
     CleanDirectory(package.OutputDirectory);
 
+    package.Extension = "nupkg";
+
     DotNetCorePublish(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePublishSettings
@@ -194,7 +196,7 @@ Task("Package-Octopus")
     OctoPack(
         package.Name,
         new OctopusPackSettings {
-            Format = OctopusPackFormat.Zip,
+            Format = OctopusPackFormat.NuPkg,
             Version = package.Version,
             BasePath = Paths.PublishDirectory,
             OutFolder = package.OutputDirectory
