@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.2</LangVersion>
     <DebugType>portable</DebugType>
     <NoWarn>1701;NU1603</NoWarn>
     <AssemblyName>Linker.Tests</AssemblyName>
