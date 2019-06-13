@@ -51,9 +51,7 @@ namespace Linker.Web.Controllers
             return Create(UniqueId(), url);
 
             string UniqueId()
-            {
-                return Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            }
+                => Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
         }
 
         [HttpPut("{id}")]
