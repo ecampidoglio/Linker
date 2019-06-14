@@ -57,9 +57,17 @@ namespace Linker.Web.Controllers
         [HttpPut("{id}")]
         public IActionResult Create(string id, string url)
         {
+            if (IsNotAbsoluteUri(url))
+            {
+                return BadRequest("Invalid or missing URL");
+            }
+
             saveLink.WithIdAndUrl(id, new Uri(url));
 
             return CreatedAtRoute("Follow", new { id }, url);
+
+            bool IsNotAbsoluteUri(string uri)
+                => !Uri.IsWellFormedUriString(uri, UriKind.Absolute);
         }
     }
 }
