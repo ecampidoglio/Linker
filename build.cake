@@ -15,7 +15,7 @@
 
 var target = Argument("target", "Build");
 var configuration = Argument("configuration", "Release");
-var deployToEnvironment = Argument("deployTo", "Development");
+var deployToEnvironment = Argument("deployToEnvironment", "Development");
 
 Setup<PackageMetadata>(context =>
     new PackageMetadata(
