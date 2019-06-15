@@ -109,6 +109,7 @@ Task("Build-Frontend")
 
 Task("Package-NuGet")
     .IsDependentOn("Test")
+    .IsDependentOn("Build-Frontend")
     .Does<PackageMetadata>(package =>
 {
     CleanDirectory(package.OutputDirectory);
@@ -127,6 +128,7 @@ Task("Package-NuGet")
 Task("Package-WebDeploy")
     .WithCriteria(IsRunningOnWindows(), "MSDeploy is only available on Windows")
     .IsDependentOn("Test")
+    .IsDependentOn("Build-Frontend")
     .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
@@ -146,6 +148,7 @@ Task("Package-WebDeploy")
 
 Task("Package-Zip")
     .IsDependentOn("Test")
+    .IsDependentOn("Build-Frontend")
     .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
@@ -172,6 +175,7 @@ Task("Package-Zip")
 
 Task("Package-Octopus")
     .IsDependentOn("Test")
+    .IsDependentOn("Build-Frontend")
     .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
