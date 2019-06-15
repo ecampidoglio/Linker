@@ -90,12 +90,12 @@ Task("Version")
 
     if (package.Version != null)
     {
-        Information($"Read version {package.Version} from project file");
+        Information($"Read version {package.Version} from the project file");
     }
     else
     {
         package.Version = GitVersion().FullSemVer;
-        Information($"Calculated version {package.Version} from Git history");
+        Information($"Calculated version {package.Version} from the Git history");
     }
 });
 
