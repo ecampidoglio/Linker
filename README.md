@@ -7,9 +7,9 @@
 Linker is a _really_ simple web-based URL shortening service.
 
 ## Background
-When I set out to create a [Pluralsight course](http://bit.ly/ps-cake) about my favorite built tool, [Cake](https://cakebuild.net), I needed a .NET web application for my demos. The idea of the course was to take an existing web app and show how to use Cake to create a *build* and *deployment* pipeline for it from scratch. By the end, you'd have a Cake script that can take the application all the way from source code to running software. That idea eventually became [*Building and Deploying Applications with Cake*](http://bit.ly/ps-cake), which you can read more about [here](https://megakemp.com/2017/10/20/cake-at-pluralsight/).
+When I set out to create a [Pluralsight course](http://bit.ly/ps-cake) about my favorite built tool, [Cake](https://cakebuild.net), I needed a .NET web application for my demos. The idea behind the course was to take an existing web app and show you how to use Cake to create a *build* and *deployment* pipeline for it from scratch. By the end, you'd have a Cake script that can take the application all the way from source code to running software. That idea eventually became [*Building and Deploying Applications with Cake*](http://bit.ly/ps-cake), which you can read more about [here](https://megakemp.com/2017/10/20/cake-at-pluralsight/).
 
-Back to the app. Right off the bat, I had three requirements for it:
+Right off the bat, I had three requirements for my demo app:
 
 1. Be simple
 2. Be realistic
