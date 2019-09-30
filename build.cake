@@ -32,6 +32,7 @@ Task("Clean")
     CleanDirectory(Paths.PublishDirectory);
     CleanDirectories("**/bin");
     CleanDirectories("**/obj");
+    CleanDirectories("**/node_modules");
 });
 
 Task("Compile")
