@@ -13,6 +13,7 @@
     <AssemblyName>Linker</AssemblyName>
     <PackageId>Linker</PackageId>
     <IsPackable>true</IsPackable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
