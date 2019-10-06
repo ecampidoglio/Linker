@@ -1,4 +1,4 @@
-#tool nuget:?package=GitVersion.CommandLine&version=4.0.0-beta0012
+#tool nuget:?package=GitVersion.CommandLine&version=5.0.1
 #tool nuget:?package=coveralls.io&version=1.4.2
 #tool nuget:?package=OctopusTools&version=6.7.0
 
