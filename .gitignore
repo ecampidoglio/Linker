@@ -72,7 +72,7 @@ nCrunchTemp_*
 **/node_modules/
 
 # Cake
-tools/**
+tools/
 !tools/packages.config
 
 # Frontend
