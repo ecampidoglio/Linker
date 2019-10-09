@@ -18,11 +18,16 @@ var configuration = Argument("configuration", "Release");
 var deployToEnvironment = Argument("deployToEnvironment", "Development");
 
 Setup<PackageMetadata>(context =>
-    new PackageMetadata(
+{
+    var metadata = new PackageMetadata(
         outputDirectory: Argument("packageOutputPath", "packages"),
         name: "Linker",
-        version: "0.1.0")
-);
+        version: ReadVersionFromProjectFile(Context));
+
+    Information($"Package:\n{metadata}");
+
+    return metadata;
+});
 
 Task("Clean")
     .Does<PackageMetadata>(package =>
