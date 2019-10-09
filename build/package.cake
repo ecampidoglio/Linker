@@ -25,4 +25,7 @@ public class PackageMetadata
 
     public string FullPath
         => OutputDirectory.CombineWithFilePath(FileName).FullPath;
+
+    public override string ToString()
+        => $"Name: {Name}\nVersion: {Version}\nPath: {FullPath}";
 }
