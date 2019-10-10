@@ -4,3 +4,8 @@ branches:
   develop:
     increment: Minor
     tag: preview
+  cake-workshop:
+    regex: cake\-workshop
+    source-branches: [master]
+    increment: None
+    tag: workshop
