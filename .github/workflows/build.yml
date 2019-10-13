@@ -11,6 +11,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
       - name: Run the build script
         run: .\build.ps1 -Target Build-CI -Configuration ${env:CONFIGURATION}
         shell: powershell
