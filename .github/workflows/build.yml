@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '10.x'
       - name: Run the build script
-        run: .\build.ps1 -Target Build-CI -Configuration ${env:CONFIGURATION}
+        run: .\build.ps1 -Target Test -Configuration ${env:CONFIGURATION}
         shell: powershell
   build_on_linux:
     name: Build on Linux
