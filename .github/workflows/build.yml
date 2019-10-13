@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run the build script
-        run: .\build.ps1 -Target Build-CI -Configuration $CONFIGURATION
+        run: .\build.ps1 -Target Build-CI -Configuration ${env:CONFIGURATION}
         shell: powershell
   build_on_linux:
     name: Build on Linux
