@@ -126,8 +126,9 @@ Task("Package-NuGet")
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePackSettings
         {
-            Configuration = configuration,
-            OutputDirectory = package.OutputDirectory
+            OutputDirectory = package.OutputDirectory,
+            NoRestore = true,
+            NoBuild = true
         });
 });
 
