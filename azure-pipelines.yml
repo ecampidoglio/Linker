@@ -2,7 +2,7 @@ pool:
   name: Hosted VS2017
 steps:
   - task: PowerShell@2
-    displayName: 'Build and Test'
+    displayName: 'Build'
     inputs:
       targetType: filePath
       filePath: ./build.ps1
