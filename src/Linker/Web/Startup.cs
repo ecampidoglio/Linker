@@ -8,15 +8,20 @@ namespace Linker.Web
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddRouting();
+            services.AddControllers();
             services.AddLinkInMemoryStore();
         }
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMvc();
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseRouting();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }
