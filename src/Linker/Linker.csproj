@@ -6,6 +6,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <LangVersion>8.0</LangVersion>
     <DebugType>portable</DebugType>
     <NoWarn>1701;NU1603</NoWarn>
