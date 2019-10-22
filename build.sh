@@ -4,7 +4,7 @@
 ########################################################################################
 
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-CAKE_VERSION=0.33.0
+CAKE_VERSION=0.35.0
 TOOLS_DIR=$SCRIPT_DIR/tools
 CAKE_TOOL=$TOOLS_DIR/dotnet-cake
 

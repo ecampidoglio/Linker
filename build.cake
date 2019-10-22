@@ -65,18 +65,12 @@ Task("Test")
     }
     .WithFilter("[Linker.*Tests]*");
 
-    if (BuildSystem.IsRunningOnTeamCity)
+    coverageSettings.CoverletOutputFormat = BuildSystem switch
     {
-        coverageSettings.CoverletOutputFormat = CoverletOutputFormat.teamcity;
-    }
-    else if (BuildSystem.IsRunningOnAzurePipelinesHosted)
-    {
-        coverageSettings.CoverletOutputFormat = CoverletOutputFormat.cobertura;
-    }
-    else
-    {
-        coverageSettings.CoverletOutputFormat = CoverletOutputFormat.opencover;
-    }
+        { IsRunningOnTeamCity: true } => CoverletOutputFormat.teamcity,
+        { IsRunningOnAzurePipelinesHosted: true } => CoverletOutputFormat.cobertura,
+        _ => CoverletOutputFormat.opencover
+    };
 
     DotNetCoreTest(
         Paths.TestProjectFile.FullPath,
@@ -92,17 +86,9 @@ Task("Test")
 Task("Version")
     .Does<PackageMetadata>(package =>
 {
-    package.Version = ReadVersionFromProjectFile(Context);
+    package.Version ??= GitVersion().FullSemVer;
 
-    if (package.Version != null)
-    {
-        Information($"Read version {package.Version} from the project file");
-    }
-    else
-    {
-        package.Version = GitVersion().FullSemVer;
-        Information($"Calculated version {package.Version} from the Git history");
-    }
+    Information($"Version set to {package.Version}");
 });
 
 Task("Build-Frontend")
