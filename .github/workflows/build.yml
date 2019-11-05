@@ -3,24 +3,17 @@ on:
   push:
     branches:
       - master
-env:
-  CONFIGURATION: Release
 jobs:
-  build_on_windows:
-    name: Build on Windows
-    runs-on: windows-latest
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - name: Get the sources
+        uses: actions/checkout@v1
+      - name: Run the build script
+        uses: ecampidoglio/cake-action@v1.1.0
         with:
-          node-version: '10.x'
-      - name: Run the build script
-        run: .\build.ps1 -Target Test -Configuration ${env:CONFIGURATION}
-        shell: powershell
-  build_on_linux:
-    name: Build on Linux
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Run the build script
-        run: ./build.sh --target=Build-CI --configuration=$CONFIGURATION
+          target: Build-CI
