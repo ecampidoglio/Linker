@@ -293,6 +293,24 @@ Task("Deploy-Octopus")
         });
 });
 
+Task("Deploy-Docker")
+    .IsDependentOn("Package-Docker")
+    .Does<PackageMetadata>(package =>
+{
+    var imageName = $"{Urls.DockerRegistryUrl}/{package.Name.ToLower()}:{package.Version}";
+
+    DockerLogin(
+        EnvironmentVariable("DockerUser"),
+        EnvironmentVariable("DockerPassword"),
+        Urls.DockerRegistryUrl);
+
+    DockerPush(imageName);
+})
+.Finally(() =>
+{
+    DockerLogout(Urls.DockerRegistryUrl);
+});
+
 Task("Publish-AzurePipelines-Test-Results")
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
     .IsDependentOn("Test")
