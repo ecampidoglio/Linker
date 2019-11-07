@@ -7,6 +7,7 @@
 #addin nuget:?package=Cake.Incubator&version=5.0.1
 #addin nuget:?package=Cake.Coverlet&version=2.2.1
 #addin nuget:?package=Cake.Coveralls&version=0.9.0
+#addin nuget:?package=Cake.Docker&version=0.10.1
 
 #load build/paths.cake
 #load build/package.cake
@@ -198,6 +199,36 @@ Task("Package-Octopus")
             BasePath = Paths.PublishDirectory,
             OutFolder = package.OutputDirectory
         });
+});
+
+Task("Package-Docker")
+    .IsDependentOn("Test")
+    .IsDependentOn("Build-Frontend")
+    .IsDependentOn("Version")
+    .Does<PackageMetadata>(package =>
+{
+    var imageName = $"{Urls.DockerRegistryUrl}/{package.Name.ToLower()}:{package.Version}";
+
+    DotNetCorePublish(
+        Paths.ProjectFile.GetDirectory().FullPath,
+        new DotNetCorePublishSettings
+        {
+            Configuration = configuration,
+            OutputDirectory = Paths.PublishDirectory,
+            NoRestore = true,
+            NoBuild = true,
+            MSBuildSettings = new DotNetCoreMSBuildSettings
+            {
+                NoLogo = true
+            }
+        });
+
+    DockerBuild(
+        new DockerImageBuildSettings
+        {
+            Tag = new[] { imageName }
+        },
+        Paths.DockerContextDirectory.FullPath);
 });
 
 Task("Deploy-WebDeploy")
