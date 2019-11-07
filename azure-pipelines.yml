@@ -5,9 +5,9 @@ steps:
     displayName: 'Install Node'
     inputs:
       versionSpec: '12.x'
-  - task: PowerShell@2
+  - task: Bash@3
     displayName: 'Build'
     inputs:
       targetType: filePath
-      filePath: ./build.ps1
-      arguments: '-Target Build-CI'
+      filePath: build.sh
+      arguments: '--target=Build-CI'
