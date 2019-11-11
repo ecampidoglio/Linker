@@ -406,6 +406,7 @@ Task("Publish-TeamCity-Artifacts")
 });
 
 Task("Publish-NuGet-Package-To-GitHub")
+    .WithCriteria(context => context.LatestCommitHasVersionTag(), "The latest commit doesn't have a version tag")
     .WithCriteria(IsRunningOnWindows(), "The GitHub Package Repository only supports the NuGet client on Windows")
     .IsDependentOn("Package-NuGet")
     .Does<PackageMetadata>(package =>
@@ -441,6 +442,7 @@ Task("Publish-NuGet-Package-To-GitHub")
 });
 
 Task("Publish-Docker-Image-To-GitHub")
+    .WithCriteria(context => context.LatestCommitHasVersionTag(), "The latest commit doesn't have a version tag")
     .IsDependentOn("Package-Docker")
     .Does<ImageMetadata>(image =>
 {
