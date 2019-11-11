@@ -396,6 +396,40 @@ Task("Publish-TeamCity-Artifacts")
     TeamCity.PublishArtifacts(package.OutputDirectory.FullPath);
 });
 
+Task("Publish-NuGet-Package-To-GitHub")
+    .IsDependentOn("Package-NuGet")
+    .Does<PackageMetadata>(package =>
+{
+    var settings = new NuGetSourcesSettings
+    {
+        UserName = EnvironmentVariable("GitHubUser"),
+        Password = EnvironmentVariable("GitHubPassword"),
+        IsSensitiveSource = true
+    };
+
+    if (!NuGetHasSource(Urls.GitHubNuGetPackageRegistryUrl.AbsoluteUri, settings))
+    {
+        NuGetAddSource(
+            "ecampidoglio.github.com",
+            Urls.GitHubNuGetPackageRegistryUrl.AbsoluteUri,
+            settings);
+    }
+
+    NuGetPush(
+        package.FullPath,
+        new NuGetPushSettings
+        {
+            Source = "ecampidoglio.github.com",
+            SkipDuplicate = true
+        });
+})
+.Finally(() =>
+{
+    NuGetRemoveSource(
+        "ecampidoglio.github.com",
+        Urls.GitHubNuGetPackageRegistryUrl.AbsoluteUri);
+});
+
 Task("Set-Build-Number")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
     .IsDependentOn("Version")
@@ -428,6 +462,9 @@ Task("Publish-Artifacts")
     .IsDependentOn("Publish-AzurePipelines-Artifacts")
     .IsDependentOn("Publish-AppVeyor-Artifacts")
     .IsDependentOn("Publish-TeamCity-Artifacts");
+
+Task("Publish-Packages")
+    .IsDependentOn("Publish-NuGet-Package-To-GitHub");
 
 Task("Build")
     .IsDependentOn("Compile")
