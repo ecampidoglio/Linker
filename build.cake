@@ -118,8 +118,6 @@ Task("Package-NuGet")
     .IsDependentOn("Build-Frontend")
     .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(package.OutputDirectory);
-
     package.Extension = "nupkg";
 
     DotNetCorePack(
@@ -140,8 +138,6 @@ Task("Package-WebDeploy")
     .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(package.OutputDirectory);
-
     package.Extension = "zip";
 
     DotNetCoreMSBuild(
@@ -160,8 +156,6 @@ Task("Package-Zip")
     .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(package.OutputDirectory);
-
     package.Extension = "zip";
 
     DotNetCorePublish(
@@ -187,8 +181,6 @@ Task("Package-Octopus")
     .IsDependentOn("Version")
     .Does<PackageMetadata>(package =>
 {
-    CleanDirectory(package.OutputDirectory);
-
     package.Extension = "nupkg";
 
     DotNetCorePublish(
@@ -507,6 +499,7 @@ Task("Build")
     .IsDependentOn("Build-Frontend");
 
 Task("Build-CI")
+    .IsDependentOn("Clean")
     .IsDependentOn("Compile")
     .IsDependentOn("Test")
     .IsDependentOn("Version")
@@ -517,6 +510,7 @@ Task("Build-CI")
     .IsDependentOn("Set-Build-Number");
 
 Task("Deploy-CI")
+    .IsDependentOn("Clean")
     .IsDependentOn("Deploy-Kudu")
     .IsDependentOn("Publish-Test-Results")
     .IsDependentOn("Publish-Artifacts")
