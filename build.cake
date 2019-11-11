@@ -397,6 +397,7 @@ Task("Publish-TeamCity-Artifacts")
 });
 
 Task("Publish-NuGet-Package-To-GitHub")
+    .WithCriteria(IsRunningOnWindows(), "The GitHub Package Repository only supports the NuGet client on Windows")
     .IsDependentOn("Package-NuGet")
     .Does<PackageMetadata>(package =>
 {
