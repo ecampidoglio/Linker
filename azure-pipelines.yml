@@ -10,4 +10,4 @@ steps:
     inputs:
       targetType: filePath
       filePath: build.sh
-      arguments: '--target=Build-CI'
+      arguments: '--target=Deploy-CI'
