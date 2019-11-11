@@ -440,6 +440,28 @@ Task("Publish-NuGet-Package-To-GitHub")
         Urls.GitHubNuGetPackageRegistryUrl.AbsoluteUri);
 });
 
+Task("Publish-Docker-Image-To-GitHub")
+    .IsDependentOn("Package-Docker")
+    .Does<ImageMetadata>(image =>
+{
+    var originalName = image.Name;
+    image.Registry =  Urls.GitHubDockerPackageRegistryUrl;
+    image.Repository = "ecampidoglio/linker/linker";
+
+    DockerTag(originalName, image.Name);
+
+    DockerLogin(
+        EnvironmentVariable("GitHubUser"),
+        EnvironmentVariable("GitHubPassword"),
+        Urls.GitHubDockerPackageRegistryUrl);
+
+    DockerPush(image.Name);
+})
+.Finally(() =>
+{
+    DockerLogout(Urls.GitHubDockerPackageRegistryUrl);
+});
+
 Task("Set-Build-Number")
     .WithCriteria(() => !BuildSystem.IsLocalBuild)
     .IsDependentOn("Version")
@@ -474,7 +496,8 @@ Task("Publish-Artifacts")
     .IsDependentOn("Publish-TeamCity-Artifacts");
 
 Task("Publish-Packages")
-    .IsDependentOn("Publish-NuGet-Package-To-GitHub");
+    .IsDependentOn("Publish-NuGet-Package-To-GitHub")
+    .IsDependentOn("Publish-Docker-Image-To-GitHub");
 
 Task("Build")
     .IsDependentOn("Compile")
