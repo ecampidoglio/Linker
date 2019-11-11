@@ -518,6 +518,7 @@ Task("Build-CI")
 
 Task("Deploy-CI")
     .IsDependentOn("Deploy-Kudu")
+    .IsDependentOn("Publish-Test-Results")
     .IsDependentOn("Publish-Artifacts")
     .IsDependentOn("Publish-Packages")
     .IsDependentOn("Set-Build-Number");
