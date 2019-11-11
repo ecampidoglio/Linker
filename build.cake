@@ -517,6 +517,7 @@ Task("Build-CI")
 Task("Deploy-CI")
     .IsDependentOn("Deploy-Kudu")
     .IsDependentOn("Publish-Artifacts")
+    .IsDependentOn("Publish-Packages")
     .IsDependentOn("Set-Build-Number");
 
 RunTarget(target);
