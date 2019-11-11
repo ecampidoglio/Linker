@@ -25,7 +25,7 @@ Setup<PackageMetadata>(context =>
         name: "Linker",
         version: ReadVersionFromProjectFile(Context));
 
-    Information($"Package:\n{metadata}");
+    Information($"Package\n{metadata}");
 
     return metadata;
 });
