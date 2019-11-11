@@ -9,6 +9,7 @@
 #addin nuget:?package=Cake.Coveralls&version=0.9.0
 #addin nuget:?package=Cake.Docker&version=0.10.1
 
+#load build/container.cake
 #load build/paths.cake
 #load build/package.cake
 #load build/version.cake
@@ -26,6 +27,18 @@ Setup<PackageMetadata>(context =>
         version: ReadVersionFromProjectFile(Context));
 
     Information($"Package\n{metadata}");
+
+    return metadata;
+});
+
+Setup<ImageMetadata>(context =>
+{
+    var metadata = new ImageMetadata(
+        registry: Urls.DockerRegistryUrl,
+        repository: "Linker",
+        tag: ReadVersionFromProjectFile(Context));
+
+    Information($"Image\n{metadata}");
 
     return metadata;
 });
@@ -206,10 +219,8 @@ Task("Package-Docker")
     .IsDependentOn("Test")
     .IsDependentOn("Build-Frontend")
     .IsDependentOn("Version")
-    .Does<PackageMetadata>(package =>
+    .Does<ImageMetadata>(image =>
 {
-    var imageName = $"{Urls.DockerRegistryUrl}/{package.Name.ToLower()}:{package.Version}";
-
     DotNetCorePublish(
         Paths.ProjectFile.GetDirectory().FullPath,
         new DotNetCorePublishSettings
@@ -227,7 +238,7 @@ Task("Package-Docker")
     DockerBuild(
         new DockerImageBuildSettings
         {
-            Tag = new[] { imageName }
+            Tag = new[] { image.Name }
         },
         Paths.DockerContextDirectory.FullPath);
 });
@@ -296,16 +307,14 @@ Task("Deploy-Octopus")
 
 Task("Deploy-Docker")
     .IsDependentOn("Package-Docker")
-    .Does<PackageMetadata>(package =>
+    .Does<ImageMetadata>(image =>
 {
-    var imageName = $"{Urls.DockerRegistryUrl}/{package.Name.ToLower()}:{package.Version}";
-
     DockerLogin(
         EnvironmentVariable("DockerUser"),
         EnvironmentVariable("DockerPassword"),
         Urls.DockerRegistryUrl);
 
-    DockerPush(imageName);
+    DockerPush(image.Name);
 })
 .Finally(() =>
 {
