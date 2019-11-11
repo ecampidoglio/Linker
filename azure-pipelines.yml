@@ -1,5 +1,7 @@
 pool:
   vmImage: 'windows-2019'
+trigger:
+- master
 steps:
   - task: NodeTool@0
     displayName: 'Install Node'
