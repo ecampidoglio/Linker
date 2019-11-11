@@ -12,9 +12,18 @@
     <NoWarn>1701;NU1603</NoWarn>
     <OutputType>Exe</OutputType>
     <AssemblyName>Linker</AssemblyName>
-    <PackageId>Linker</PackageId>
     <IsPackable>true</IsPackable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Linker</PackageId>
+    <PackageDescription>A simple URL shortening service that serves as a nice demo application.</PackageDescription>
+    <PackageTags>demo-app;aspnet-web-api;cake-build;pluralsight</PackageTags>
+    <PackageProjectUrl>https://github.com/ecampidoglio/Linker</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ecampidoglio/Linker.git</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
