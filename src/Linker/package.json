@@ -36,7 +36,7 @@
     "uglify-js": "^3.5.15"
   },
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "webui-popover": "^1.2.18"
   }
 }
