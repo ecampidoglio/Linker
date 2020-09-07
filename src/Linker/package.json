@@ -32,7 +32,7 @@
     "browserify": "^16.2.3",
     "clean-css-cli": "^4.3.0",
     "copyfiles": "^2.1.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "uglify-js": "^3.5.15"
   },
   "dependencies": {
