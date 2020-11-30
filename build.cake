@@ -313,7 +313,7 @@ Task("Deploy-Docker")
     DockerLogout(Urls.DockerRegistryUrl);
 });
 
-Task("Publish-AzurePipelines-Test-Results")
+/* Task("Publish-AzurePipelines-Test-Results")
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
     .IsDependentOn("Test")
     .Does(() =>
@@ -341,7 +341,7 @@ Task("Publish-AzurePipelines-Code-Coverage-Report")
             SummaryFileLocation = Paths.CodeCoverageReportFile
         }
     );
-});
+}); */
 
 Task("Publish-TeamCity-Test-Results")
     .WithCriteria(() => BuildSystem.IsRunningOnTeamCity)
@@ -370,13 +370,13 @@ Task("Publish-Coveralls-Code-Coverage-Report")
         });
 });
 
-Task("Publish-AzurePipelines-Artifacts")
+/* Task("Publish-AzurePipelines-Artifacts")
     .WithCriteria(() => BuildSystem.IsRunningOnAzurePipelinesHosted)
     .IsDependentOn("Package-Zip")
     .Does<PackageMetadata>(package =>
 {
     TFBuild.Commands.UploadArtifactDirectory(package.OutputDirectory);
-});
+}); */
 
 Task("Publish-AppVeyor-Artifacts")
     .WithCriteria(() => BuildSystem.IsRunningOnAppVeyor)
@@ -463,8 +463,8 @@ Task("Set-Build-Number")
 {
     if (BuildSystem.IsRunningOnAzurePipelinesHosted)
     {
-        TFBuild.Commands.UpdateBuildNumber(
-            $"{package.Version}+{TFBuild.Environment.Build.Number}");
+        // TFBuild.Commands.UpdateBuildNumber(
+            // $"{package.Version}+{TFBuild.Environment.Build.Number}");
     }
     else if (BuildSystem.IsRunningOnAppVeyor)
     {
@@ -479,13 +479,13 @@ Task("Set-Build-Number")
 });
 
 Task("Publish-Test-Results")
-    .IsDependentOn("Publish-AzurePipelines-Test-Results")
-    .IsDependentOn("Publish-AzurePipelines-Code-Coverage-Report")
+    // .IsDependentOn("Publish-AzurePipelines-Test-Results")
+    // .IsDependentOn("Publish-AzurePipelines-Code-Coverage-Report")
     .IsDependentOn("Publish-TeamCity-Test-Results")
     .IsDependentOn("Publish-Coveralls-Code-Coverage-Report");
 
 Task("Publish-Artifacts")
-    .IsDependentOn("Publish-AzurePipelines-Artifacts")
+    // .IsDependentOn("Publish-AzurePipelines-Artifacts")
     .IsDependentOn("Publish-AppVeyor-Artifacts")
     .IsDependentOn("Publish-TeamCity-Artifacts");
 
