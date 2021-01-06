@@ -18,5 +18,6 @@ jobs:
         uses: cake-build/cake-action@v1
         with:
           target: Build-CI
+          cake-version: 0.38.5
           arguments: |
               configuration: Debug
