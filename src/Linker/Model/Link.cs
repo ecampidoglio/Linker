@@ -15,8 +15,8 @@ namespace Linker.Model
             Href = href;
         }
 
-        public object Id { get; }
+        public object Id { get; set; }
 
-        public Uri Href { get; }
+        public Uri Href { get; set; }
     }
 }

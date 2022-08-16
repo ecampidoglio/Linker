@@ -9,14 +9,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-var builder = WebApplication.CreateBuilder(args);
+var webApplicationOptions = new WebApplicationOptions
+{
+    Args = args,
+    ContentRootPath = Directory.GetCurrentDirectory(),
+};
+var builder = WebApplication.CreateBuilder(webApplicationOptions);
 
 builder.Services.AddRouting();
 builder.Services.AddControllers();
 builder.Services.AddLinkInMemoryStore();
 
 builder.Host
-    .UseContentRoot(Directory.GetCurrentDirectory())
     .ConfigureLogging(log => log.AddConsole());
 
 builder.WebHost
@@ -78,3 +82,5 @@ static IResult Create(string id, string url, ISaveLinks saveLink)
 }
 
 app.Run();
+
+public partial class Program { }

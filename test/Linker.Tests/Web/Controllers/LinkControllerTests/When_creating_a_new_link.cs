@@ -1,77 +1,63 @@
 using System;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
 using NSubstitute;
-using Linker.Web.Controllers;
-using Linker.Model;
 
 namespace Linker.Tests
 {
-    public class When_creating_a_new_link
+    public class When_creating_a_new_link : IClassFixture<CustomWebApplicationFactory>
     {
-        [Fact]
-        public void Should_return_an_http_created_result()
+        private readonly CustomWebApplicationFactory _factory;
+        private readonly HttpClient _client;
+        private readonly FormUrlEncodedContent _httpContent;
+
+        public When_creating_a_new_link(CustomWebApplicationFactory factory)
         {
-            var sut = new LinkController(
-                Substitute.For<IRetrieveLinks>(),
-                Substitute.For<ISaveLinks>());
+            _factory = factory;
+            _client = factory.CreateClient();
 
-            var result = sut.Create("id", "http://example.com");
-
-            result.StatusCode().Should().Be(201);
+            _httpContent = new FormUrlEncodedContent(
+                new[] { new KeyValuePair<string, string>("url", "http://example.com") });
         }
 
         [Fact]
-        public void Should_return_the_route_name_for_the_created_link()
+        public async Task Should_return_an_http_created_result()
         {
-            var sut = new LinkController(
-                Substitute.For<IRetrieveLinks>(),
-                Substitute.For<ISaveLinks>());
+            var result = await _client.PutAsync("/link/id", _httpContent);
 
-            var result = sut.Create("id", "http://example.com");
-
-            result.Should().BeOfType<CreatedAtRouteResult>()
-                  .Which.RouteName.Should().Be("Follow");
+            result.StatusCode.Should().Be(HttpStatusCode.Created);
         }
 
         [Fact]
-        public void Should_return_the_route_id_for_the_created_link()
+        public async Task Should_return_the_redirect_location_for_the_created_link()
         {
-            var sut = new LinkController(
-                Substitute.For<IRetrieveLinks>(),
-                Substitute.For<ISaveLinks>());
+            var result = await _client.PutAsync("/link/id", _httpContent);
 
-            var result = sut.Create("id", "http://example.com");
-
-            result.Should().BeOfType<CreatedAtRouteResult>()
-                  .Which.RouteValues.Should().ContainKey("id").And.NotBeNull();
+            result.Should().BeOfType<HttpResponseMessage>()
+                  .Which.Headers.Should().ContainSingle(kv => kv.Key == "Location" && kv.Value.First() == "http://localhost/id");
         }
 
         [Fact]
-        public void Should_return_the_url_of_the_created_link()
+        public async Task Should_return_the_url_of_the_created_link()
         {
-            var sut = new LinkController(
-                Substitute.For<IRetrieveLinks>(),
-                Substitute.For<ISaveLinks>());
+            var result = await _client.PutAsync("/link/id", _httpContent);
 
-            var result = sut.Create("id", "http://example.com");
+            var content = await result.Content.ReadAsStringAsync();
 
-            result.Should().BeOfType<CreatedAtRouteResult>()
-                  .Which.Value.Should().Be("http://example.com");
+            content.Should().Be("\"http://example.com\"");
         }
 
         [Fact]
-        public void Should_save_a_link_with_the_specified_id_and_url()
+        public async Task Should_save_a_link_with_the_specified_id_and_url()
         {
-            var saveLink = Substitute.For<ISaveLinks>();
-            var sut = new LinkController(
-                Substitute.For<IRetrieveLinks>(),
-                saveLink);
+            await _client.PutAsync("/link/id", _httpContent);
 
-            var result = sut.Create("id", "http://example.com");
-
-            saveLink.Received().WithIdAndUrl("id", new Uri("http://example.com"));
+            _factory.SaveLinks.Received().WithIdAndUrl("id", new Uri("http://example.com"));
         }
     }
 }

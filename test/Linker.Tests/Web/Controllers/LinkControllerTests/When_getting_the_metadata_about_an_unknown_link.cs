@@ -1,24 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Xunit;
 using FluentAssertions;
-using NSubstitute;
-using Linker.Web.Controllers;
-using Linker.Model;
 
 namespace Linker.Tests
 {
-    public class When_getting_the_metadata_about_an_unknown_link
+    public class When_getting_the_metadata_about_an_unknown_link : IClassFixture<CustomWebApplicationFactory>
     {
-        [Fact]
-        public void Should_return_an_http_not_found_result()
+        private readonly HttpClient _client;
+
+        public When_getting_the_metadata_about_an_unknown_link(CustomWebApplicationFactory factory)
         {
-            var sut = new LinkController(
-                Substitute.For<IRetrieveLinks>(),
-                Substitute.For<ISaveLinks>());
+            _client = factory.CreateClient();
+        }
 
-            var result = sut.Metadata("unknown-link-id");
+        [Fact]
+        public async Task Should_return_an_http_not_found_result()
+        {
+            var result = await _client.GetAsync("/link/unknown-link-id");
 
-            result.Should().BeOfType<NotFoundResult>();
+            result.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
     }
 }
